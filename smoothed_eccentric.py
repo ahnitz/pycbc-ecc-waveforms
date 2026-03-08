@@ -84,5 +84,10 @@ def dominant_harmonic_waveform(**params):
     from pycbc.waveform import get_td_waveform
     if 'approximant' in params:
         params.pop('approximant')
-    hp, hc = get_td_waveform(approximant=params['base_model'], **params)
+
+    base = params['base_model']
+    if hasattr(base, 'decode'):
+        base = base.decode()
+
+    hp, hc = get_td_waveform(approximant=base, **params)
     return smoothed_waveform(hp, hc)
